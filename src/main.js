@@ -1,6 +1,8 @@
 import './assets/main.css'
 import 'virtual:windi.css'
+import 'nprogress/nprogress.css'
 
+import './permission.js'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
