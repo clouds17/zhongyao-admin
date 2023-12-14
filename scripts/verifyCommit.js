@@ -1,7 +1,6 @@
 const msg = require('fs')
-    .readFileSync('.git/COMMIT_EDIMSG', 'utf-8')
-    .trim()
-
+  .readFileSync('.git/COMMIT_EDITMSG', 'utf-8')
+  .trim()
 
   // feat: 新功能
   // fix: 修改 bug
@@ -19,7 +18,7 @@ const msg = require('fs')
   // release: 发版
   // deps: 依赖相关的修改
 
-  const commitRE = /^(revert: )?(feat|fix|docs|dx|style|refactor|perf|test|workflow|build|ci|chore|types|wip|release)(\(.+\))?: .{1,50}/
+  const commitRE = /^(revert: )?(feat|fix|docs|dx|style|refactor|perf|test|workflow|build|ci|chore|types|wip|release|deps)(\(.+\))?: .{1,50}/
   const mergeRe = /^(Merge pull request|Merge branch)/
   console.log('msg', msg)
   if (!commitRE.test(msg)) {

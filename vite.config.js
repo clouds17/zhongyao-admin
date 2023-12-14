@@ -13,9 +13,7 @@ import {
   createStyleImportPlugin,
   ElementPlusResolve,
 } from 'vite-plugin-style-import'
-// 自动导入图标组件
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,34 +22,17 @@ export default defineConfig({
     vue(),
     WindiCSS(),
     AutoImport({
-      resolvers: [
-        ElementPlusResolver(),
-         // 自动导入图标组件
-         IconsResolver({
-          prefix: 'Icon',
-        }),
-      ],
-      include: [
-        /\.[j]sx?$/, // .ts, .tsx, .js, .jsx
-        /\.vue$/, /\.vue\?vue/ // .vue
-      ],
+      // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
+      imports: ['vue'],
+      // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
+      resolvers: [ ElementPlusResolver() ]
     }),
     Components({
-      resolvers: [
-        ElementPlusResolver(),
-        // 自动注册图标组件
-        IconsResolver({
-          prefix: 'Icon',
-        }),
-      ],
+      resolvers: [ ElementPlusResolver() ]
     }),
-    Icons({
-      autoInstall: true,
-    }),
+    
     createStyleImportPlugin({
-      resolves: [
-        ElementPlusResolve(),
-      ]
+      resolves: [ ElementPlusResolve() ]
     })
   ],
   resolve: {
