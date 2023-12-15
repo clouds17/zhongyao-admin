@@ -8,7 +8,10 @@
                 <el-aside :width="commonStore.asideWidth">
                     <f-menu></f-menu>
                 </el-aside>
-                <el-main>Main</el-main>
+                <el-main>
+                    <f-tag-list></f-tag-list>
+                    <router-view></router-view>
+                </el-main>
             </el-container>
         </el-container>
     </div>
@@ -35,6 +38,13 @@ console.log('width', commonStore.asideWidth)
     }
     .el-aside {
         height: 100%;
+        overflow: hidden;
+        @apply shadow-md;
+    }
+    .el-main {
+        @apply bg-light-200;
+        display: flex;
+        flex-direction: column;
         overflow: hidden;
     }
 }

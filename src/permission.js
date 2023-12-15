@@ -1,5 +1,6 @@
 import router from "./router";
 import { getToken } from "./util/auth.js";
+import { toast } from "./util/usePrompt.js";
 import { showFullLoading, hideFullLoading } from "./util/useNprogress.js";
 
 // 全局前置守卫
@@ -10,11 +11,13 @@ router.beforeEach((to, from, next) => {
     // 获取token
     // const token = getToken()
     // if (!token && to.path !== '/login') {
+    //     toast('请先登录', 'error')
     //     return next({
     //         path: '/login'
     //     })
     // }
     // if (token && to.path === '/login') {
+    //     toast('请勿重复登录', 'error')
     //     return next({
     //         path: from.path ? from.path : '/'
     //     })

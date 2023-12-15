@@ -1,49 +1,74 @@
 <template>
     <el-menu
-        default-active="2"
+        :default-active="defaultActive"
         :collapse="commonStore.isCollapse"
         class="el-menu-vertical"
         :collapse-transition="false"
-        @open="handleOpen"
-        @close="handleClose"
+        @select="handleSelect"
       >
-        <el-sub-menu index="1">
+        <el-sub-menu index="/home">
           <template #title>
-            <el-icon><location /></el-icon>
-            <span>Navigator One</span>
+            <el-icon><help /></el-icon>
+            <span>后台面板</span>
           </template>
-          <el-menu-item-group title="Group One">
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item two</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
-          </el-menu-item-group>
-          <el-sub-menu index="1-4">
-            <template #title>item four</template>
-            <el-menu-item index="1-4-1">item one</el-menu-item>
-          </el-sub-menu>
+          <el-menu-item index="/" >
+              <el-icon><home-filled /></el-icon>
+              <span>主控台</span>
+          </el-menu-item>
+          
         </el-sub-menu>
-        <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
-          <span>Navigator Two</span>
+        
+        <el-sub-menu index="/tcm">
+          <template #title>
+            <el-icon><Coin /></el-icon>
+            <span>中药数据库</span>
+          </template>
+          <el-menu-item index="/tcm/list" >
+              <el-icon><List /></el-icon>
+              <span>中药列表</span>
+          </el-menu-item>
+        </el-sub-menu>
+        <el-menu-item index="/choose/list" >
+            <el-icon><Menu /></el-icon>
+            <span>选项管理</span>
         </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <el-icon><document /></el-icon>
-          <span>Navigator Three</span>
-        </el-menu-item>
+        <el-sub-menu index="">
+          <template #title>
+            <el-icon><Setting /></el-icon>
+            <span>系统设置</span>
+          </template>
+          <el-menu-item index="/setting/userlist" >
+              <el-icon><User /></el-icon>
+              <span>用户管理</span>
+          </el-menu-item>
+          <el-menu-item index="/setting/permissions" >
+              <el-icon><Connection /></el-icon>
+              <span>权限管理</span>
+          </el-menu-item>
+          <el-menu-item index="/setting/role" >
+              <el-icon><Histogram /></el-icon>
+              <span>角色管理</span>
+          </el-menu-item>
+        </el-sub-menu>
     </el-menu>
 </template>
 
 <script setup>
 import { useCommonStore } from '@/stores/common.js'
+import { useRouter, useRoute } from 'vue-router'
 const commonStore = useCommonStore()
+const router = useRouter()
+const route = useRoute()
 
-const handleOpen = (key, keyPath) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key, keyPath) => {
-  console.log(key, keyPath)
+commonStore.setMenuActive(route.path)
+// 获取当前默认路由路径
+const defaultActive = computed(() => commonStore.defaultMenuActive)
+
+// 点击菜单转跳地址
+function handleSelect(index, indexPath, item, routeResult) {
+    router.push({
+        path: index
+    })
 }
 </script>
 
