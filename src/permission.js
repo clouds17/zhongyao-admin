@@ -23,6 +23,9 @@ router.beforeEach((to, from, next) => {
     //     })
     // }
 
+    const title = (to.meta.title ? to.meta.title + '-' : '') + '中药资源普查信息管理系统'
+    document.title = title
+
     next()
 })
 
