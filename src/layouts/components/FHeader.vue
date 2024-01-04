@@ -53,6 +53,12 @@
 <script setup>
 import { useCommonStore } from '@/stores/common.js'
 import { useFullscreen } from '@vueuse/core'
+import { MessageBox } from '@/util/usePrompt.js'
+import { useUserStore } from '@/stores/user.js'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const { LOGOUT_FUNC } = useUserStore()
 
 const commonStore = useCommonStore()
 
@@ -68,6 +74,15 @@ const handleRefresh = () => {
     location.reload()
 }
 
+const handleLogout = () => {
+    MessageBox('是否要退出登录?').then(() => {
+        LOGOUT_FUNC().then(res => {
+            router.push('/login')
+            toast('退出登录成功')
+        })
+    })
+}
+
 // 下拉选择点击函数
 function handleCommand(command) {
     switch (command) {
@@ -76,8 +91,7 @@ function handleCommand(command) {
             // formDrawerRef.value.open()
             break;
         case 'logout':
-            console.log('退出登录')
-            // handleLogout()
+            handleLogout()
             break;
         default:
             break;

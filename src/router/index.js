@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+import { asyncRoutes } from './dynamicRoutes'
 
 const routes = [
     {
@@ -7,54 +7,7 @@ const routes = [
       name: 'admin',
       component: () => import('@/layouts/Admin.vue'),
       children: [
-        {
-          path: '/',
-          name: '/',
-          meta: {
-            title: '首页'
-          },
-          component: () => import('@/views/Index.vue')
-        },
-        {
-          path: '/tcm/list',
-          name: '/tcm/list',
-          meta: {
-            title: '中药数据库'
-          },
-          component: () => import('@/views/tcm/List.vue')
-        },
-        {
-          path: '/setting/userlist',
-          name: '/setting/userlist',
-          meta: {
-            title: '用户管理'
-          },
-          component: () => import('@/views/setting/UserList.vue')
-        },
-        {
-          path: '/setting/permissions',
-          name: '/setting/permissions',
-          meta: {
-            title: '权限管理'
-          },
-          component: () => import('@/views/setting/Permissions.vue')
-        },
-        {
-          path: '/setting/role',
-          name: '/setting/role',
-          meta: {
-            title: '角色管理'
-          },
-          component: () => import('@/views/setting/Role.vue')
-        },
-        {
-          path: '/choose/list',
-          name: '/choose/list',
-          meta: {
-            title: '选项管理'
-          },
-          component: () => import('@/views/choose/List.vue')
-        }
+       
       ]
     },
     {
@@ -72,9 +25,29 @@ const routes = [
 ]
 
 
-const router = createRouter({
+
+
+export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routes
 })
 
-export default router
+// 动态添加路由的方法
+export function addRoutes(menus) {
+  let hasNewRouters = false
+  const addRoutersByMenus = (arr) => {
+    arr.forEach(menuItem => {
+      let item = asyncRoutes.find(rou => rou.path == menuItem.frontpath)
+      if (item && !router.hasRoute(item.name)) {
+        router.addRoute("admin", item)
+        hasNewRouters = true
+      }
+      if (menuItem.child && menuItem.child.length > 0) {
+        addRoutersByMenus(menuItem.child)
+      }
+    })
+  }
+
+  addRoutersByMenus(menus)
+  return hasNewRouters
+}

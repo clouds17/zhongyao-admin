@@ -43,7 +43,7 @@ export default defineConfig({
   server: {
     "proxy": {
       "/api": {
-        target: 'http://ceshi13.xxxx.cn',
+        target: 'http://ceshi13.dishait.cn',
         // 改变请求的origin为target的值
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')

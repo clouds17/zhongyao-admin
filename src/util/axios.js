@@ -2,6 +2,10 @@ import axios from 'axios'
 import { getToken } from './auth.js'
 import { toast } from './usePrompt.js'
 
+import pinia from "@/stores/index.js";
+import { useUserStore } from '@/stores/user.js'
+
+
 const instance = axios.create({
     // 接口根路径
     baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -30,11 +34,12 @@ instance.interceptors.response.use(function(response) {
 }, function(error) {
     // 超出2xx范围的状态码都会出发该函数
     // 对响应错误做点什么
-
+    const { CLEAR_DATA } = useUserStore(pinia)
     const msg = error?.response.data.msg || '请求失败'
 
-    if (msg == '非法token, 请先登录！') {
+    if (msg == '非法token，请先登录！') {
         // 清除数据,清除了token重新刷新时,在路由守卫那边就会转跳到login页面
+        CLEAR_DATA()
         // TODO
         location.reload()
     }

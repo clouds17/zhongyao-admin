@@ -29,6 +29,13 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { toast } from '@/util/usePrompt.js'
+import { useUserStore } from '@/stores/user.js'
+
+const { LOGIN_FUNC } = useUserStore()
+
+const router = useRouter()
 const loginFormRef = ref(null)
 const loginForm = reactive({
     username: '',
@@ -54,7 +61,7 @@ const loginRules = reactive({
         { required: true, message: '用户名不能为空', trigger: 'blur' }
     ],
     password: [
-        { validator: validatePass, trigger: 'blur' }
+        { required: true, message: '密码不能为空', trigger: 'blur' }
     ]
 })
 
@@ -62,6 +69,12 @@ const onSubmit = () => {
   loginFormRef.value.validate((valid) => {
     if (!valid) return false;
     loading.value = true
+    LOGIN_FUNC(loginForm).then(res => {
+        toast('登录成功')
+        router.replace('/')
+    }).finally(() => {
+        loading.value = false
+    })
     console.log('submit!')
    
   })
